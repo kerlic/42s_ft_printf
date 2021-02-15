@@ -6,7 +6,7 @@
 /*   By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 23:04:36 by ilsong            #+#    #+#             */
-/*   Updated: 2021/02/15 18:11:19 by ilsong           ###   ########.fr       */
+/*   Updated: 2021/02/08 23:35:05 by ilsong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		print_sign(char *data, int *flg);
 
 int		print_space(char *data, int width, int *flg, char fmt);
 char	*z_arr(int len);
-int		print_data(char *data, int *flg, int sign);
+int		print_data(char *data, int *flg, int sign, char fmt);
 int		print_c_str(char *data, int *flg, char fmt);
 int		print_dec(char *data, int *flg, char fmt);
 char	*make_data(char format, int *flg, int *nop, va_list *ap);

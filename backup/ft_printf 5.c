@@ -6,16 +6,11 @@
 /*   By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:55:42 by ilsong            #+#    #+#             */
-/*   Updated: 2021/02/13 18:03:31 by ilsong           ###   ########.fr       */
+/*   Updated: 2021/02/15 18:30:03 by ilsong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include <stdio.h>
-//#include <unistd.h>
-//#include <stdlib.h>
-//#include <stdarg.h>
 #include "ft_printf.h"
-
 
 #define	r_arr 0
 #define	fill_0 1
@@ -99,7 +94,7 @@ char	*ft_itoa(int nbr)
 		if (l_nbr == 0)
 			return (str);
 	}
-	return (0);
+	return (NULL);
 }
 
 int		ft_atoi(const char *str)
@@ -258,7 +253,7 @@ char	*ft_us_itoa(unsigned int nbr)
 		if (nbr == 0)
 			return (str);
 	}
-	return (0);
+	return (NULL);
 }
 
 
@@ -337,20 +332,6 @@ int		print_sign(char *data, int *flg)
 	return (1);
 }
 
-char	*z_arr(int len)
-{
-	char *ret;
-
-	if (len <= 0)
-		return (NULL);
-	if (!(ret = malloc(sizeof(char) * len)))
-		exit(-1);
-	ret[len] = '\0';
-	while (--len >= 0)
-		ret[len] = '0';
-	return (ret);
-}
-
 int		print_0x(char *data, char fmt, int *flg)
 {
 	if ((fmt == 'x' && flg[hash] && *data != 0 && *data != '0') || fmt == 'p')
@@ -377,49 +358,26 @@ int		print_space(char *data, int width, int *flg, char fmt)
 	int		nop;
 
 	nop = 0;
-	ch = flg[fill_0] && flg[r_arr] && (flg[is_pri] == 0 || fmt == '%') ? '0' : ' ';
-	if (ch == '0' && (fmt == 'p' || ((fmt == 'x' || fmt == 'X' || fmt == 'o'))) && flg[r_arr] == 1)
-		nop += print_0x(data, fmt, flg);
-	if (ch == '0' && fmt != 's' && fmt != 'c')////////////////////////////
+	ch = flg[fill_0] && flg[r_arr] && (flg[is_pri] == 0 || fmt == '%')
+	? '0' : ' ';
+	if (ch == '0' && (fmt == 'p' || ((fmt == 'x' || fmt == 'X' || fmt == 'o')))
+	&& flg[r_arr] == 1)	nop += print_0x(data, fmt, flg);
+	if (ch == '0' && fmt != 's' && fmt != 'c')
 		nop += print_sign(data, flg);
-	while ((width-- - 2 * (fmt == 'p' || ((*data && *data != '0') && (fmt == 'x' || fmt == 'X' || fmt == 'o') && flg[hash])) > 0))
+	while ((width-- - 2 * (fmt == 'p' || ((*data && *data != '0')
+	&& (fmt == 'x' || fmt == 'X' || fmt == 'o') && flg[hash])) > 0))
 	{
 		write(1, &ch, 1);
 		nop++;
 	}
-	if (ch == ' ' && (fmt == 'p' || ((fmt == 'x' || fmt == 'X' || fmt == 'o'))) && flg[r_arr] == 1)
+	if (ch == ' ' && (fmt == 'p' || ((fmt == 'x' || fmt == 'X' || fmt == 'o')))
+	&& flg[r_arr] == 1)
 		nop += print_0x(data, fmt, flg);
 	if (ch == ' ' && flg[r_arr] && fmt != 's'&& fmt != 'c')
 		nop += print_sign(data, flg);
 	return (nop);
 }
 
-int		print_data(char *data, int *flg, int sign, char fmt)
-{
-	int		nop;
-	char	*zarr;
-	char	*ori_data;
-
-	nop = 0;
-	ori_data = data;
-	if (sign)
-		nop += print_sign(data, flg);
-	if (*data == '-')
-		data++;
-	if ((zarr = z_arr(flg[prcsn] - flg[lenth])))
-	{
-		data = strjoin(zarr, data);
-		free(zarr);
-	//	fmt != 'n' ? free(ori_data) : 0;////////////
-		fmt = fmt == 'n'? 'n' : fmt;///////////
-	}
-	while (*data)
-	{
-		write(1, data++, 1);
-		nop++;
-	}
-	return (nop);
-}
 
 int		print_data_cstr(char *data, int len, char fmt)
 {
@@ -443,57 +401,55 @@ int		print_data_cstr(char *data, int len, char fmt)
 //////////
 ///////////
 
-int		print_data_r(char *data, int *flg, int sign, char fmt)
+int		print_data(char *data, int *flg, int sign)
 {
 	int		nop;
-	char	*zarr;
-	char	*ori_data;
+	int	znum = 0;
 
 	nop = 0;
-	ori_data = data - (*data == '-' && flg[fill_0]);
 	if (sign)
 		nop += print_sign(data, flg);
 	if (*data == '-')
 		data++;
-	if ((zarr = z_arr(flg[prcsn] - flg[lenth])))
+	znum = flg[prcsn] - flg[lenth];
+	while (--znum >= 0)
 	{
-		data = strjoin(zarr, data);
-		free(zarr);
-//		fmt != 'n' ? free(ori_data) : 0;////////////
+		write(1, "0", 1);
+		nop++;
 	}
 	while (*data)
 	{
 		write(1, data++, 1);
 		nop++;
 	}
-	fmt++;
 	return (nop);
 }
 
-int		print_dec(char *data, int *flg, char fmt)//pricision 입력 x와 0입력의 구
+
+int		print_dec(char *data, int *flg, char fmt)
 {
 	int	nop;///p는 부호출력x
 
-	if (!data)
+	if (data == NULL)
 		return (0);
 	nop = 0;
 	*data == '-' ? --flg[lenth] : 0;/////////
 	if (flg[wdth] >= flg[lenth] && flg[wdth] > flg[prcsn])
 	{//%d는 lenth, width, prcsn순서
 		flg[r_arr] == 0 ? (nop += print_0x(data, fmt ,flg),
-		nop += print_data(data, flg, 1, fmt)) : 0;
+		nop += print_data(data, flg, 1)) : 0;
 		nop += (flg[lenth] < flg[prcsn])
 		? print_space(data, flg[wdth] - flg[prcsn]
 		- (*data == '-' || flg[plus] || flg[spc]), flg, fmt)
 		: print_space(data, flg[wdth] - flg[lenth]
 		- (*data == '-' || flg[plus] || flg[spc]), flg, fmt);
 		nop += flg[r_arr] == 1
-		? print_data_r(data + (*data == '-' && flg[fill_0]), flg, 0, fmt) : 0;
+		? print_data(data + (*data == '-' && flg[fill_0]), flg, 0) : 0;
 	}
 	else
 	{
 		nop += print_0x(data, fmt, flg);
-		nop += print_data(data, flg, 1, fmt);
+		nop += print_data(data, flg, 1);
 	}
 	return (nop);
 }
@@ -616,7 +572,7 @@ char	*null_init(void)
 	return (ret);
 }
 
-void	print_main(const char *ch, va_list *ap, int *nop)//nop은 코드 아끼기 위
+void	print_main(const char *ch, va_list *ap, int *nop)
 {
 	char	format;
 	char	*data;
@@ -635,10 +591,10 @@ void	print_main(const char *ch, va_list *ap, int *nop)//nop은 코드 아끼기 
 		data = make_data(format, flg, nop, ap);
 	format == 'X' ? to_upper(data) : 0;
 	if ((format == 's') || (format == 'c'))
-		*nop += print_c_str(data, flg, format);//////////////
+		*nop += print_c_str(data, flg, format);
 	else
 		*nop += print_dec(data, flg, format);
-//	format != 'n' ? free(data) : 0;
+	data != NULL ? free(data) : 0;
 	return ;
 }
 
@@ -665,7 +621,6 @@ int		ft_printf(const char *str, ...)
 		str++;
 	}
 	va_end(ap);
-	//system("leaks tester.out > leaks_result_temp; cat leaks_result_temp | grep leaked && rm -rf leaks_result_temp");
 	return (nop);
 }
 
