@@ -6,48 +6,58 @@
 #    By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/31 16:20:46 by ilsong            #+#    #+#              #
-#    Updated: 2021/01/31 16:47:43 by ilsong           ###   ########.fr        #
+#    Updated: 2021/02/17 20:25:12 by ilsong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
+LIBFT = ./libft/libft.a
+
+SRCS = 	ft_printf.c \
+		sources/convert.c \
+		sources/data.c \
+		sources/flag.c \
+		sources/print.c \
+		sources/print_fix.c
+
+OBS	= 	convert.o \
+		data.o \
+		flag.o \
+		print.o \
+		print_fix.o
+
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-AR = ar rcs
-RM = rm -f
 
-MADATORY =	ft_printf
+FLAGS = -c -Wall -Wextra -Werror
 
-BONUS = ft_printf
+INCLUDES = -I ./includes
 
-#OBJS = $(SRCS:%.o:%.c)
-
-SRCS_DIR = ./
-SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(MADATORY)))
-SRCS_B = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(BONUS)))
-
-OBJS_DIR = ./
-OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(MADATORY)))
-OBJS_B = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(BONUS)))
-
-.c.o: $(SRCS)
-	$(CC) $(CFLAGS) -c -o $@ $<
+OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
-	$(AR) $@ $^
+	$(MAKE) -C ./libft
+	cp libft/libft.a $(NAME)
+	$(CC) $(FLAGS) $(INCLUDES) $(SRCS)
+	ar -rcs $(NAME) $(OBJS)
 
-bonus: $(OBJS_B)
-	$(AR) $(NAME) $^
+bonus : $(OBJS)
+	$(MAKE) -C ./libft
+	cp libft/libft.a $(NAME)
+	$(CC) $(FLAGS) $(INCLUDES) $(SRCS)
+	ar -rcs $(NAME) $(OBJS)
 
-all: $(NAME)
+all : $(NAME)
 
-clean:
-	$(RM) $(OBJS) $(OBJS_B)
+clean :
+	$(MAKE) clean -C ./libft
+	rm -rf $(OBS)
+	rm -rf $(OBJS)
 
-fclean: clean
-	$(RM) $(NAME)
+fclean : clean
+	$(MAKE) fclean -C ./libft
+	rm -rf $(NAME)
 
-re: clean all
+re : fclean all
 
-.PHONY: bonus all clean fclean re
+.PHONY: all clean fclean re bonus
