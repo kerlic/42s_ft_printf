@@ -1,0 +1,75 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C bulid for clang",
+            "command": "/usr/bin/clang",
+            "args": [
+                "-Wall",
+                "-Wextra",
+                //"-Werror",
+             //   "-L",
+             //   "libft",
+             //   "-lft",
+                "-I./includes",
+                "./libft/libft.h",
+                "./includes/ft_printf.h",
+                "-g",
+                "${file}",
+                "-g",
+                "./sources/*.c",
+                "-g",
+                "./libft/*.c",
+                //"sources/convert.c",
+                //"sources/convert_di.c",
+                //"sources/convert_ox.c",
+                //"sources/convert_u.c",
+                //"sources/data.c",
+                //"sources/flag.c",
+                //"sources/print.c",
+                //"sources/print_fix.c",
+           //     "-o",
+           //     "${workspaceFolder}/${fileBasenameNoExtension}.out"
+                "&&",
+                "${workspaceFolder}/a.out"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "presentation": {
+                "clear": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "type": "shell",
+            "label": "execute",
+            "command": "${fileDirname}/${fileBasenameNoExtension}",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "clear": true
+            }
+        }
+    ]
+}

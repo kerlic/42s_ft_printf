@@ -6,7 +6,7 @@
 /*   By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 14:40:19 by ilsong            #+#    #+#             */
-/*   Updated: 2021/02/16 23:28:20 by ilsong           ###   ########.fr       */
+/*   Updated: 2021/02/20 23:47:54 by ilsong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,41 @@
 
 void	init_flag(int *flg)
 {
-	flg[r_arr] = 1;
-	flg[fill_0] = 0;
-	flg[wdth] = 0;
-	flg[prcsn] = 0;
-	flg[plus] = 0;
-	flg[spc] = 0;
-	flg[hash] = 0;
-	flg[is_pri] = 0;
-	flg[is_wdth] = 0;
+	flg[R_ARR] = 1;
+	flg[FILL_0] = 0;
+	flg[WDTH] = 0;
+	flg[PRCSN] = 0;
+	flg[PLUS] = 0;
+	flg[SPC] = 0;
+	flg[HASH] = 0;
+	flg[IS_PRI] = 0;
+	flg[IS_WDTH] = 0;
+	flg[SIZE] = 0;
 }
 
 void	flg_1(const char *ch, int *flg)
 {
 	if (*ch == '-')
-		flg[r_arr] = 0;
+		flg[R_ARR] = 0;
 	else if (*ch == '0')
-		flg[fill_0] = 1;
-	*ch == '+' ? flg[plus] = 1 : 0;
-	*ch == ' ' ? flg[spc] = 1 : 0;
-	*ch == '#' ? flg[hash] = 1 : 0;
+		flg[FILL_0] = 1;
+	*ch == '+' ? flg[PLUS] = 1 : 0;
+	*ch == ' ' ? flg[SPC] = 1 : 0;
+	*ch == '#' ? flg[HASH] = 1 : 0;
 }
 
 void	flg_width(const char *ch, int *flg, va_list *ap)
 {
 	if (*ch == '*')
 	{
-		flg[is_wdth] = 1;
-		flg[wdth] = va_arg(*ap, int);
+		flg[IS_WDTH] = 1;
+		flg[WDTH] = va_arg(*ap, int);
 		ch++;
 	}
-	else if (is_ch(*ch, "123456789"))
+	else if (ft_strchr("123456789", *ch))
 	{
-		flg[wdth] = ft_atoi(ch);
-		flg[is_wdth] = 1;
+		flg[WDTH] = ft_atoi(ch);
+		flg[IS_WDTH] = 1;
 	}
 }
 
@@ -55,33 +56,24 @@ void	flg_pricisn(const char *ch, int *flg, va_list *ap)
 {
 	if (*ch == '*')
 	{
-		flg[prcsn] = va_arg(*ap, int);
+		flg[PRCSN] = va_arg(*ap, int);
 	}
-	else if (is_ch(*ch, "0123456789"))
+	else if (ft_strchr("0123456789", *ch))
 	{
-		flg[prcsn] = ft_atoi(ch);
+		flg[PRCSN] = ft_atoi(ch);
 	}
-	flg[is_pri] = 1;
+	flg[IS_PRI] = 1;
 }
 
-char	flag_on(const char *ch, int *flg, va_list *ap)
+void	type_size(const char *ch, int *flg)
 {
-	init_flag(flg);
-	while (!is_ch(*ch, ".*123456789%cspdiuxXno"))
-		flg_1(ch++, flg);
-	if (*ch == '*' || is_ch(*ch, "123456789"))
-		flg_width(ch++, flg, ap);
-	if (flg[is_wdth] && flg[wdth] < 0)
-	{
-		flg[wdth] *= -1;
-		flg[r_arr] = 0;
-	}
-	while (!is_ch(*ch, ".%cspdiuxXno"))
-		ch++;
-	if (*ch == '.')
-		flg_pricisn(++ch, flg, ap);
-	flg[prcsn] < 0 ? flg[is_pri] = 0 : 0;
-	while (!is_ch(*ch, "%cspdiuxXno"))
-		ch++;
-	return (*ch);
+	if (flg[SIZE] == 1 && *ch == 'l')
+		flg[SIZE] = 2;
+	else if (flg[SIZE] == 0 && *ch == 'l')
+		flg[SIZE] = 1;
+	else if (flg[SIZE] == -1 && *ch == 'h')
+		flg[SIZE] = -2;
+	else if (flg[SIZE] == 0 && *ch == 'h')
+		flg[SIZE] = -1;
+	return ;
 }

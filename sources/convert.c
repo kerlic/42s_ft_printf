@@ -6,7 +6,7 @@
 /*   By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 19:55:24 by ilsong            #+#    #+#             */
-/*   Updated: 2021/02/16 23:21:10 by ilsong           ###   ########.fr       */
+/*   Updated: 2021/02/21 16:23:30 by ilsong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	to_upper(char *data)
 	}
 }
 
-char	*to_hex(long long int dec)
+char	*to_hex(long long unsigned int dec)
 {
-	int					digit;
-	int					i;
-	long	long	int	temp;
-	long	long	int	div;
-	char				*hex;
+	int								digit;
+	int								i;
+	long	long	unsigned	int	temp;
+	long	long	unsigned	int	div;
+	char							*hex;
 
 	digit = 1;
 	div = 1;
@@ -51,13 +51,13 @@ char	*to_hex(long long int dec)
 	return (hex);
 }
 
-char	*to_oct(long long int dec)
+char	*to_oct(long long unsigned int dec)
 {
-	int					digit;
-	int					i;
-	long	long	int	temp;
-	long	long	int	div;
-	char				*oct;
+	int								digit;
+	int								i;
+	long	long	unsigned	int	temp;
+	long	long	unsigned	int	div;
+	char							*oct;
 
 	digit = 1;
 	div = 1;
@@ -78,27 +78,4 @@ char	*to_oct(long long int dec)
 		div /= 8;
 	}
 	return (oct);
-}
-
-char	*ft_us_itoa(unsigned int nbr)
-{
-	int					len;
-	char				*str;
-	unsigned	int		temp;
-
-	len = 1;
-	temp = nbr;
-	while (temp /= 10)
-		len++;
-	if (!(str = (char *)malloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	str[len] = 0;
-	while (nbr >= 0)
-	{
-		str[--len] = (nbr % 10) + '0';
-		nbr /= 10;
-		if (nbr == 0)
-			return (str);
-	}
-	return (NULL);
 }

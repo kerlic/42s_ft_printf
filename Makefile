@@ -16,12 +16,18 @@ LIBFT = ./libft/libft.a
 
 SRCS = 	ft_printf.c \
 		sources/convert.c \
+		sources/convert_di.c \
+		sources/convert_ox.c \
+		sources/convert_u.c \
 		sources/data.c \
 		sources/flag.c \
 		sources/print.c \
 		sources/print_fix.c
 
 OBS	= 	convert.o \
+		convert_di.o \
+		convert_ox.o \
+		convert_u.o \
 		data.o \
 		flag.o \
 		print.o \

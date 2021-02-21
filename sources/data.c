@@ -6,7 +6,7 @@
 /*   By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 19:49:35 by ilsong            #+#    #+#             */
-/*   Updated: 2021/02/16 23:21:04 by ilsong           ###   ########.fr       */
+/*   Updated: 2021/02/20 15:31:43 by ilsong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,38 @@ char	*data_char(va_list *ap)
 
 char	*data_percent(int *flg)
 {
-	flg[spc] = 0;
-	flg[plus] = 0;
-	flg[prcsn] = 0;
+	flg[SPC] = 0;
+	flg[PLUS] = 0;
+	flg[PRCSN] = 0;
 	return (ft_strdup("%"));
+}
+
+char	*data_unsign_dec(va_list *ap, int *flg)
+{
+	if (flg[SIZE] == 2)
+		return (ft_llus_itoa(va_arg(*ap, unsigned long long int)));
+	else if (flg[SIZE] == 1)
+		return (ft_lus_itoa(va_arg(*ap, unsigned long int)));
+	else if (flg[SIZE] == 0)
+		return (ft_us_itoa(va_arg(*ap, unsigned int)));
+	else if (flg[SIZE] == -1)
+		return (ft_sus_itoa((short unsigned int)va_arg(*ap, int)));
+	else if (flg[SIZE] == -2)
+		return (ft_ssus_itoa((unsigned char)va_arg(*ap, int)));
+	return (NULL);
+}
+
+char	*data_int(va_list *ap, int *flg)
+{
+	if (flg[SIZE] == 2)
+		return (ft_llong_itoa(va_arg(*ap, long long int)));
+	else if (flg[SIZE] == 1)
+		return (ft_long_itoa(va_arg(*ap, long int)));
+	else if (flg[SIZE] == 0)
+		return (ft_itoa(va_arg(*ap, int)));
+	else if (flg[SIZE] == -1)
+		return (ft_short_itoa((short int)va_arg(*ap, int)));
+	else if (flg[SIZE] == -2)
+		return (ft_sshort_itoa((signed char)va_arg(*ap, int)));
+	return (NULL);
 }

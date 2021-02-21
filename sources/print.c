@@ -6,7 +6,7 @@
 /*   By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 21:05:05 by ilsong            #+#    #+#             */
-/*   Updated: 2021/02/16 23:20:46 by ilsong           ###   ########.fr       */
+/*   Updated: 2021/02/20 15:22:03 by ilsong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		print_data(char *data, int *flg, int sign)
 		nop += print_sign(data, flg);
 	if (*data == '-')
 		data++;
-	znum = flg[prcsn] - flg[lenth];
+	znum = flg[PRCSN] - flg[LNTH];
 	while (--znum >= 0)
 	{
 		write(1, "0", 1);
@@ -57,26 +57,26 @@ int		print_data(char *data, int *flg, int sign)
 	return (nop);
 }
 
-int		print_dec(char *data, int *flg, char fmt)
+int		print_num(char *data, int *flg, char fmt)
 {
 	int	nop;
 
 	nop = 0;
-	*data == '-' ? --flg[lenth] : 0;
-	if (flg[wdth] >= flg[lenth] && flg[wdth] > flg[prcsn])
+	*data == '-' ? --flg[LNTH] : 0;
+	if (flg[WDTH] >= flg[LNTH] && flg[WDTH] > flg[PRCSN])
 	{
-		if (flg[r_arr] == 0)
+		if (flg[R_ARR] == 0)
 		{
 			nop += print_0x(data, fmt, flg);
 			nop += print_data(data, flg, 1);
 		}
-		nop += (flg[lenth] < flg[prcsn])
-		? print_space(data, flg[wdth] - flg[prcsn]
-		- (*data == '-' || flg[plus] || flg[spc]), flg, fmt)
-		: print_space(data, flg[wdth] - flg[lenth]
-		- (*data == '-' || flg[plus] || flg[spc]), flg, fmt);
-		nop += flg[r_arr] == 1
-		? print_data(data + (*data == '-' && flg[fill_0]), flg, 0) : 0;
+		nop += (flg[LNTH] < flg[PRCSN])
+		? print_space(data, flg[WDTH] - flg[PRCSN]
+		- (*data == '-' || flg[PLUS] || flg[SPC]), flg, fmt)
+		: print_space(data, flg[WDTH] - flg[LNTH]
+		- (*data == '-' || flg[PLUS] || flg[SPC]), flg, fmt);
+		nop += flg[R_ARR] == 1
+		? print_data(data + (*data == '-' && flg[FILL_0]), flg, 0) : 0;
 	}
 	else
 	{
@@ -93,24 +93,24 @@ int		print_c_str(char *data, int *flg, char fmt)
 	nop = 0;
 	if (fmt == 'c')
 	{
-		nop += flg[r_arr] == 0 ? print_data_cstr(data, 0, 'c') : 0;
-		nop += (flg[is_wdth])
-		? print_space(data, flg[wdth] - flg[lenth], flg, 'c') : 0;
-		nop += flg[r_arr] == 1 ? print_data_cstr(data, 0, 'c') : 0;
+		nop += flg[R_ARR] == 0 ? print_data_cstr(data, 0, 'c') : 0;
+		nop += (flg[IS_WDTH])
+		? print_space(data, flg[WDTH] - flg[LNTH], flg, 'c') : 0;
+		nop += flg[R_ARR] == 1 ? print_data_cstr(data, 0, 'c') : 0;
 	}
-	else if (flg[is_pri] == 1 && flg[lenth] >= flg[prcsn])
+	else if (flg[IS_PRI] == 1 && flg[LNTH] >= flg[PRCSN])
 	{
-		flg[r_arr] == 0 ? nop += print_data_cstr(data, flg[prcsn], 's') : 0;
-		nop += flg[prcsn] >= 0 ?
-		print_space(data, flg[wdth] - flg[prcsn], flg, 's')
-		: print_space(data, flg[wdth] - flg[lenth], flg, 's');
-		flg[r_arr] == 1 ? nop += print_data_cstr(data, flg[prcsn], 's') : 0;
+		flg[R_ARR] == 0 ? nop += print_data_cstr(data, flg[PRCSN], 's') : 0;
+		nop += flg[PRCSN] >= 0 ?
+		print_space(data, flg[WDTH] - flg[PRCSN], flg, 's')
+		: print_space(data, flg[WDTH] - flg[LNTH], flg, 's');
+		flg[R_ARR] == 1 ? nop += print_data_cstr(data, flg[PRCSN], 's') : 0;
 	}
 	else
 	{
-		flg[r_arr] == 0 ? nop += print_data_cstr(data, -1, 's') : 0;
-		nop += print_space(data, flg[wdth] - flg[lenth], flg, 's');
-		flg[r_arr] == 1 ? nop += print_data_cstr(data, -1, 's') : 0;
+		flg[R_ARR] == 0 ? nop += print_data_cstr(data, -1, 's') : 0;
+		nop += print_space(data, flg[WDTH] - flg[LNTH], flg, 's');
+		flg[R_ARR] == 1 ? nop += print_data_cstr(data, -1, 's') : 0;
 	}
 	return (nop);
 }

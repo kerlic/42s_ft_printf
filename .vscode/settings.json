@@ -1,0 +1,11 @@
+{
+	"cmake.configureOnOpen": true,
+	"files.associations": {
+		"array": "c",
+		"iterator": "c",
+		"string": "c",
+		"string_view": "c",
+		"vector": "c"
+	},
+	"files.autoSave": "onFocusChange"
+}
