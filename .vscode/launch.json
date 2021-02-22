@@ -15,7 +15,8 @@
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 		//	"console": "externalTerminal",
-			"MIMode": "lldb"
+			"MIMode": "lldb",
+			"preLaunchTask": "C bulid for clang"
 		},
 		{
 			"name": "clang - Build and debug active file",

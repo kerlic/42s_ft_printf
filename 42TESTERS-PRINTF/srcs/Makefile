@@ -29,11 +29,11 @@ printmake:
 all:		${NAME}
 
 clean:
-		#	${RM} ${OBJS}
+			${RM} ${OBJS}
 			${PRINTF_MAKE} clean
 
 fclean:		clean
-	#		${RM} ${NAME}
+			${RM} ${NAME}
 			${PRINTF_MAKE} fclean
 
 re:			fclean all

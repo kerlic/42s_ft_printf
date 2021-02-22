@@ -6,11 +6,12 @@
 /*   By: ilsong <ilsong@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:55:42 by ilsong            #+#    #+#             */
-/*   Updated: 2021/02/21 16:22:09 by ilsong           ###   ########.fr       */
+/*   Updated: 2021/02/22 16:50:12 by ilsong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/ft_printf.h"
+#include <stdio.h>
 
 char	flag_on(const char *ch, int *flg, va_list *ap)
 {
@@ -91,11 +92,13 @@ void	print_main(const char *ch, va_list *ap, int *nop)
 	va_copy(temp, *ap);
 	if (format == 's' && va_arg(temp, void *) == NULL)
 	{
+		va_arg(*ap, void *);
 		data = null_init();
 		flg[LNTH] = 6;
 	}
 	else
 		data = make_data(format, flg, nop, ap);
+	va_end(temp);
 	format == 'X' ? to_upper(data) : 0;
 	if (data != NULL && ((format == 's') || (format == 'c')))
 		*nop += print_c_str(data, flg, format);
